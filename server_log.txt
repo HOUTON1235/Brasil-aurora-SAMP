@@ -1,0 +1,115 @@
+
+----------
+Loaded log file: "server_log.txt".
+----------
+
+SA-MP Dedicated Server
+----------------------
+v0.3.7-R2, (C)2005-2015 SA-MP Team
+
+[13:43:35] weburl = "www.sa-mp.com"  (string)
+[13:43:35] 
+[13:43:35] Server Plugins
+[13:43:35] --------------
+[13:43:35]  Loading plugin: mysql
+[13:43:35]   Failed.
+[13:43:35]  Loading plugin: streamer
+[13:43:35] 
+
+*** Streamer Plugin v2.9.6 by Incognito loaded ***
+
+[13:43:35]   Loaded.
+[13:43:35]  Loading plugin: sscanf
+[13:43:35] 
+[13:43:35]  ===============================
+[13:43:35] 
+[13:43:35]       sscanf plugin loaded.     
+[13:43:35] 
+[13:43:35]          Version: 2.13.8
+[13:43:35] 
+[13:43:35]    (c) 2022 Alex "Y_Less" Cole  
+[13:43:35] 
+[13:43:35]  ===============================
+[13:43:35] 
+[13:43:35]   Loaded.
+[13:43:35]  Loaded 2 plugins.
+
+[13:43:35] I couldn't load any gamemode scripts. Please verify your server.cfg
+[13:43:35] It needs a gamemode0 line at the very least.
+
+----------
+Loaded log file: "server_log.txt".
+----------
+
+SA-MP Dedicated Server
+----------------------
+v0.3.7-R2, (C)2005-2015 SA-MP Team
+
+[13:44:03] weburl = "www.sa-mp.com"  (string)
+[13:44:03] 
+[13:44:03] Server Plugins
+[13:44:03] --------------
+[13:44:03]  Loading plugin: mysql
+[13:44:03]   Failed.
+[13:44:03]  Loading plugin: streamer
+[13:44:03] 
+
+*** Streamer Plugin v2.9.6 by Incognito loaded ***
+
+[13:44:03]   Loaded.
+[13:44:03]  Loading plugin: sscanf
+[13:44:03] 
+[13:44:03]  ===============================
+[13:44:03] 
+[13:44:03]       sscanf plugin loaded.     
+[13:44:03] 
+[13:44:03]          Version: 2.13.8
+[13:44:03] 
+[13:44:03]    (c) 2022 Alex "Y_Less" Cole  
+[13:44:03] 
+[13:44:03]  ===============================
+[13:44:03] 
+[13:44:03]   Loaded.
+[13:44:03]  Loaded 2 plugins.
+
+[13:44:03] I couldn't load any gamemode scripts. Please verify your server.cfg
+[13:44:03] It needs a gamemode0 line at the very least.
+
+----------
+Loaded log file: "server_log.txt".
+----------
+
+SA-MP Dedicated Server
+----------------------
+v0.3.7-R2, (C)2005-2015 SA-MP Team
+
+[13:46:58] weburl = "www.sa-mp.com"  (string)
+[13:46:58] 
+[13:46:58] Server Plugins
+[13:46:58] --------------
+[13:46:58]  Loading plugin: mysql
+[13:46:58]  >> plugin.mysql: R41-4 successfully loaded.
+[13:46:58]   Loaded.
+[13:46:58]  Loading plugin: streamer
+[13:46:58] 
+
+*** Streamer Plugin v2.9.6 by Incognito loaded ***
+
+[13:46:58]   Loaded.
+[13:46:58]  Loading plugin: sscanf
+[13:46:58] 
+[13:46:58]  ===============================
+[13:46:58] 
+[13:46:58]       sscanf plugin loaded.     
+[13:46:58] 
+[13:46:58]          Version: 2.13.8
+[13:46:58] 
+[13:46:58]    (c) 2022 Alex "Y_Less" Cole  
+[13:46:58] 
+[13:46:58]  ===============================
+[13:46:58] 
+[13:46:58]   Loaded.
+[13:46:58]  Loaded 3 plugins.
+
+[13:46:58] I couldn't load any gamemode scripts. Please verify your server.cfg
+[13:46:58] It needs a gamemode0 line at the very least.

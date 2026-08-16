@@ -1,0 +1,4 @@
+﻿
+C:\Users\Felip\Downloads\Servidor 2\pawno\include\player_documents.inc(217) : warning 208: function with tag result used before definition, forcing reparse
+C:\Users\Felip\Downloads\Servidor 2\pawno\include\inventory_core.inc(282) : warning 208: function with tag result used before definition, forcing reparse
+

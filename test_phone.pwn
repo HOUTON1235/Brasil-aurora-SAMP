@@ -1,0 +1,9 @@
+#include <a_samp>
+#include <defines>
+#include <states>
+#include <db_core>
+#include <logger>
+#include <ui_core>
+#include <player_core>
+#include <phone_core>
+main() {}

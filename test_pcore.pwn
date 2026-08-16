@@ -1,0 +1,10 @@
+#include <a_samp>
+#include <a_mysql>
+#include <defines>
+#include <macros>
+#include <states>
+#include <permissions>
+#include <db_core>
+#include <logger>
+#include <player_core>
+main() {}

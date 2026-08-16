@@ -16,9 +16,10 @@
 #include "../core/permissions.inc"
 #include "../logs/logger.inc"
 
-// ------------------------------------------------------------
-// Struct principal do jogador
-// ------------------------------------------------------------
+// ============================================================
+// STRUCT E ARRAYS GLOBAIS
+// ============================================================
+
 enum E_PLAYER_DATA {
     // === Conta ===
     pAccountID,                         // ID na tabela accounts
@@ -55,9 +56,9 @@ enum E_PLAYER_DATA {
 
     // === Estado da sessão ===
     E_PLAYER_STATE:pState,
-    bool:pIsLogged,
-    bool:pIsDirty,                      // precisa salvar?
-    bool:pIsAFK,
+    pIsLogged,                          // 0 = false, 1 = true
+    pIsDirty,                           // 0 = false, 1 = true (precisa salvar?)
+    pIsAFK,                             // 0 = false, 1 = true
     pAFKTimer,
     pLastActivityTick,
     pLoginAttempts,
@@ -82,70 +83,69 @@ new PlayerData[MAX_PLAYERS][E_PLAYER_DATA];
 static g_PlayerIP[MAX_PLAYERS][16];
 static g_PlayerSerial[MAX_PLAYERS][41];
 
-// ------------------------------------------------------------
-// Posição de spawn padrão (centro de Santa Aurora)
-// ------------------------------------------------------------
+// ============================================================
+// POSIÇÃO DE SPAWN PADRÃO
+// ============================================================
 #define SPAWN_DEFAULT_X     1545.5
 #define SPAWN_DEFAULT_Y     -1675.7
 #define SPAWN_DEFAULT_Z     13.5
 #define SPAWN_DEFAULT_A     90.0
 
-// ------------------------------------------------------------
-// Inicializar / Limpar dados do jogador
-// ------------------------------------------------------------
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+
 stock Player_Init(playerid) {
     if(!IsValidPlayer(playerid)) return;
 
     // Zerar struct
-    PlayerData[playerid][pAccountID]       = INVALID_DB_ID;
-    PlayerData[playerid][pCharacterID]     = INVALID_DB_ID;
-    PlayerData[playerid][pAdminLevel]      = ADMIN_NONE;
-    PlayerData[playerid][pAdminName][0]    = '\0';
-    PlayerData[playerid][pName][0]         = '\0';
-    PlayerData[playerid][pSex]             = 0;
-    PlayerData[playerid][pAge]             = 18;
-    PlayerData[playerid][pSkin]            = 0;
-    PlayerData[playerid][pHealth]          = 100.0;
-    PlayerData[playerid][pArmour]          = 0.0;
-    PlayerData[playerid][pHunger]          = 100;
-    PlayerData[playerid][pThirst]          = 100;
-    PlayerData[playerid][pMoney]           = 0;
-    PlayerData[playerid][pBank]            = 0;
-    PlayerData[playerid][pLevel]           = 1;
-    PlayerData[playerid][pExperience]      = 0;
-    PlayerData[playerid][pJobID]           = INVALID_JOB_ID;
-    PlayerData[playerid][pFactionID]       = INVALID_FACTION_ID;
-    PlayerData[playerid][pFactionRank]     = 0;
-    PlayerData[playerid][pState]           = STATE_DISCONNECTED;
-    PlayerData[playerid][pIsLogged]        = false;
-    PlayerData[playerid][pIsDirty]         = false;
-    PlayerData[playerid][pIsAFK]           = false;
-    PlayerData[playerid][pAFKTimer]        = -1;
-    PlayerData[playerid][pLastActivityTick]= 0;
-    PlayerData[playerid][pLoginAttempts]   = 0;
-    PlayerData[playerid][pSessionStartTime]= 0;
-    PlayerData[playerid][pPosX]            = SPAWN_DEFAULT_X;
-    PlayerData[playerid][pPosY]            = SPAWN_DEFAULT_Y;
-    PlayerData[playerid][pPosZ]            = SPAWN_DEFAULT_Z;
-    PlayerData[playerid][pPosA]            = SPAWN_DEFAULT_A;
-    PlayerData[playerid][pInterior]        = 0;
-    PlayerData[playerid][pWorld]           = 0;
-    PlayerData[playerid][pConnectTime]     = 0;
-    PlayerData[playerid][pTotalPlaytime]   = 0;
+    PlayerData[playerid][pAccountID]        = INVALID_DB_ID;
+    PlayerData[playerid][pCharacterID]      = INVALID_DB_ID;
+    PlayerData[playerid][pAdminLevel]       = ADMIN_NONE;
+    PlayerData[playerid][pAdminName][0]     = '\0';
+    PlayerData[playerid][pName][0]          = '\0';
+    PlayerData[playerid][pSex]              = 0;
+    PlayerData[playerid][pAge]              = 18;
+    PlayerData[playerid][pSkin]             = 0;
+    PlayerData[playerid][pHealth]           = 100.0;
+    PlayerData[playerid][pArmour]           = 0.0;
+    PlayerData[playerid][pHunger]           = 100;
+    PlayerData[playerid][pThirst]           = 100;
+    PlayerData[playerid][pMoney]            = 0;
+    PlayerData[playerid][pBank]             = 0;
+    PlayerData[playerid][pLevel]            = 1;
+    PlayerData[playerid][pExperience]       = 0;
+    PlayerData[playerid][pJobID]            = INVALID_JOB_ID;
+    PlayerData[playerid][pFactionID]        = INVALID_FACTION_ID;
+    PlayerData[playerid][pFactionRank]      = 0;
+    PlayerData[playerid][pState]            = STATE_DISCONNECTED;
+    PlayerData[playerid][pIsLogged]         = 0;
+    PlayerData[playerid][pIsDirty]          = 0;
+    PlayerData[playerid][pIsAFK]            = 0;
+    PlayerData[playerid][pAFKTimer]         = -1;
+    PlayerData[playerid][pLastActivityTick] = 0;
+    PlayerData[playerid][pLoginAttempts]    = 0;
+    PlayerData[playerid][pSessionStartTime] = 0;
+    PlayerData[playerid][pPosX]             = SPAWN_DEFAULT_X;
+    PlayerData[playerid][pPosY]             = SPAWN_DEFAULT_Y;
+    PlayerData[playerid][pPosZ]             = SPAWN_DEFAULT_Z;
+    PlayerData[playerid][pPosA]             = SPAWN_DEFAULT_A;
+    PlayerData[playerid][pInterior]         = 0;
+    PlayerData[playerid][pWorld]            = 0;
+    PlayerData[playerid][pConnectTime]      = 0;
+    PlayerData[playerid][pTotalPlaytime]    = 0;
 
-    g_PlayerIP[playerid][0]     = '\0';
-    g_PlayerSerial[playerid][0] = '\0';
+    g_PlayerIP[playerid][0]                 = '\0';
+    g_PlayerSerial[playerid][0]             = '\0';
 
     // Capturar IP e GPCI
     GetPlayerIp(playerid, g_PlayerIP[playerid], sizeof(g_PlayerIP[]));
-    gpci(playerid, g_PlayerSerial[playerid], sizeof(g_PlayerSerial[]));
-
-    PlayerData[playerid][pConnectTime] = gettime();
+    PlayerData[playerid][pConnectTime]      = gettime();
 }
 
-// ------------------------------------------------------------
-// Getters e Setters com validação
-// ------------------------------------------------------------
+// ============================================================
+// ENCAPSULAMENTO: DINHEIRO
+// ============================================================
 
 stock Player_GetMoney(playerid) {
     if(!IsValidPlayer(playerid)) return 0;
@@ -180,7 +180,7 @@ stock bool:Player_RemoveMoney(playerid, amount) {
     if(!IsValidPlayer(playerid) || amount <= 0) return false;
 
     new current = PlayerData[playerid][pMoney];
-    if(current < amount) return false; // sem fundos suficientes
+    if(current < amount) return false;
 
     new newAmount = current - amount;
     if(newAmount < 0) newAmount = 0;
@@ -195,7 +195,6 @@ stock bool:Player_RemoveMoney(playerid, amount) {
     return true;
 }
 
-// Definir dinheiro diretamente (apenas para load/admin)
 stock Player_SetMoney(playerid, amount) {
     if(!IsValidPlayer(playerid)) return;
     amount = Clamp(amount, MIN_MONEY, MAX_MONEY);
@@ -203,6 +202,10 @@ stock Player_SetMoney(playerid, amount) {
     ResetPlayerMoney(playerid);
     GivePlayerMoney(playerid, amount);
 }
+
+// ============================================================
+// ENCAPSULAMENTO: BANCO
+// ============================================================
 
 stock Player_GetBank(playerid) {
     if(!IsValidPlayer(playerid)) return 0;
@@ -226,9 +229,10 @@ stock bool:Player_RemoveBank(playerid, amount) {
     return true;
 }
 
-// ------------------------------------------------------------
-// Gerenciamento de estado
-// ------------------------------------------------------------
+// ============================================================
+// ENCAPSULAMENTO: ESTADO
+// ============================================================
+
 stock Player_SetState(playerid, E_PLAYER_STATE:state) {
     if(!IsValidPlayer(playerid)) return;
     PlayerData[playerid][pState] = state;
@@ -240,27 +244,57 @@ stock E_PLAYER_STATE:Player_GetState(playerid) {
     return PlayerData[playerid][pState];
 }
 
-// ------------------------------------------------------------
-// Dirty flag — evita gravações desnecessárias
-// ------------------------------------------------------------
-stock Player_MarkDirty(playerid) {
-    if(IsValidPlayer(playerid))
-        PlayerData[playerid][pIsDirty] = true;
+// ============================================================
+// ENCAPSULAMENTO: LOGGED (AUTENTICAÇÃO)
+// ============================================================
+
+stock bool:Player_IsLogged(playerid) {
+    if(!IsValidPlayer(playerid)) return false;
+    return bool:PlayerData[playerid][pIsLogged];
 }
 
-stock Player_ClearDirty(playerid) {
-    if(IsValidPlayer(playerid))
-        PlayerData[playerid][pIsDirty] = false;
+stock Player_SetLogged(playerid, bool:value) {
+    if(!IsValidPlayer(playerid)) return;
+    PlayerData[playerid][pIsLogged] = value;
 }
+
+// ============================================================
+// ENCAPSULAMENTO: DIRTY FLAG
+// ============================================================
 
 stock bool:Player_IsDirty(playerid) {
     if(!IsValidPlayer(playerid)) return false;
-    return PlayerData[playerid][pIsDirty];
+    return bool:PlayerData[playerid][pIsDirty];
 }
 
-// ------------------------------------------------------------
-// Permissões
-// ------------------------------------------------------------
+stock Player_MarkDirty(playerid) {
+    if(!IsValidPlayer(playerid)) return;
+    PlayerData[playerid][pIsDirty] = 1;
+}
+
+stock Player_ClearDirty(playerid) {
+    if(!IsValidPlayer(playerid)) return;
+    PlayerData[playerid][pIsDirty] = 0;
+}
+
+// ============================================================
+// ENCAPSULAMENTO: AFK
+// ============================================================
+
+stock bool:Player_IsAFK(playerid) {
+    if(!IsValidPlayer(playerid)) return false;
+    return bool:PlayerData[playerid][pIsAFK];
+}
+
+stock Player_SetAFK(playerid, bool:value) {
+    if(!IsValidPlayer(playerid)) return;
+    PlayerData[playerid][pIsAFK] = value;
+}
+
+// ============================================================
+// PERMISSÕES
+// ============================================================
+
 stock Player_GetAdminLevel(playerid) {
     if(!IsValidPlayer(playerid)) return ADMIN_NONE;
     return PlayerData[playerid][pAdminLevel];
@@ -274,9 +308,8 @@ stock bool:Player_IsAdmin(playerid, minLevel = ADMIN_HELPER) {
 stock bool:Player_HasPermission(playerid, const permission[]) {
     if(!IsValidPlayer(playerid)) return false;
     new level = PlayerData[playerid][pAdminLevel];
-    if(level >= ADMIN_OWNER) return true; // owner tem tudo
+    if(level >= ADMIN_OWNER) return true;
 
-    // Varrer mapa de permissões
     for(new i = 0; i < MAX_PERMISSION_ENTRIES; i++) {
         if(strequal(PermissionMinLevel[i][0], permission)) {
             return (level >= PermissionMinLevel[i][1]);
@@ -285,9 +318,10 @@ stock bool:Player_HasPermission(playerid, const permission[]) {
     return false;
 }
 
-// ------------------------------------------------------------
-// Getters de sessão
-// ------------------------------------------------------------
+// ============================================================
+// GETTERS DE SESSÃO
+// ============================================================
+
 stock Player_GetIP(playerid, output[], size = sizeof(output)) {
     if(!IsValidPlayer(playerid)) return;
     SafeStrCopy(output, g_PlayerIP[playerid], size);
@@ -303,40 +337,41 @@ stock Player_GetSessionTime(playerid) {
     return gettime() - PlayerData[playerid][pConnectTime];
 }
 
-// ------------------------------------------------------------
-// AFK Detection
-// ------------------------------------------------------------
+// ============================================================
+// ATIVIDADE / AFK DETECTION
+// ============================================================
+
 stock Player_UpdateActivity(playerid) {
     if(!IsValidPlayer(playerid)) return;
     PlayerData[playerid][pLastActivityTick] = GetTickCount();
     if(PlayerData[playerid][pIsAFK]) {
-        PlayerData[playerid][pIsAFK] = false;
+        PlayerData[playerid][pIsAFK] = 0;
         Player_SetState(playerid, STATE_SPAWNED);
         SendInfo(playerid, "Você voltou de AFK.");
     }
 }
 
-// Verificar AFK — chamado pelo scheduler
 stock Player_CheckAFK(playerid) {
     if(!IsValidPlayer(playerid)) return;
-    if(!PlayerData[playerid][pIsLogged]) return;
+    if(!Player_IsLogged(playerid)) return;
     if(Player_GetState(playerid) == STATE_ADMIN_SPECTATING) return;
     if(Player_GetState(playerid) == STATE_DEAD) return;
 
     new elapsed = (GetTickCount() - PlayerData[playerid][pLastActivityTick]) / 1000;
-    if(elapsed >= AFK_TIMEOUT && !PlayerData[playerid][pIsAFK]) {
-        PlayerData[playerid][pIsAFK] = true;
+    if(elapsed >= AFK_TIMEOUT && PlayerData[playerid][pIsAFK] == 0) {
+        PlayerData[playerid][pIsAFK] = 1;
         Player_SetState(playerid, STATE_AFK);
         SendWarning(playerid, "Você está em modo AFK. Mova-se ou execute um comando para voltar.");
     }
 }
 
-// ------------------------------------------------------------
-// Save (chamado em logout, shutdown, save automático)
-// ------------------------------------------------------------
+// ============================================================
+// SAVE
+// ============================================================
+
 stock Player_Save(playerid) {
     if(!IsValidPlayer(playerid)) return;
-    if(!PlayerData[playerid][pIsLogged]) return;
+    if(!Player_IsLogged(playerid)) return;
     if(PlayerData[playerid][pCharacterID] == INVALID_DB_ID) return;
 
     // Atualizar posição atual
@@ -402,9 +437,10 @@ stock Player_Save(playerid) {
     CallLocalFunction("OnPlayerSaved", "i", playerid);
 }
 
-// ------------------------------------------------------------
-// Scheduler: salvar jogadores sujos a cada 5 minutos
-// ------------------------------------------------------------
+// ============================================================
+// SCHEDULER
+// ============================================================
+
 public OnScheduler5Minutes() {
     for(new i = 0; i < MAX_PLAYERS; i++) {
         if(IsValidPlayer(i) && Player_IsDirty(i)) {
@@ -413,7 +449,6 @@ public OnScheduler5Minutes() {
     }
 }
 
-// Verificar AFK a cada 10 segundos
 public OnScheduler10Seconds() {
     for(new i = 0; i < MAX_PLAYERS; i++) {
         if(IsValidPlayer(i) && PlayerData[i][pIsLogged]) {
@@ -421,4 +456,3 @@ public OnScheduler10Seconds() {
         }
     }
 }
-
